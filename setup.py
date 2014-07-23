@@ -1,5 +1,3 @@
-from distutils.core import setup
-from distutils.sysconfig import get_python_lib
 import os
 import sys
 import fileinput
@@ -14,7 +12,7 @@ __version__ = '2013.02'
 
 # We need to build MOOG and MOOGSILENT before they get moved to the scripts/
 # directory so that they can be moved into the $PATH
-if 'install' in sys.argv:
+if 'build' in sys.argv:
 
     # Identify the platform
     platform = current_platform()
@@ -147,34 +145,28 @@ if 'install' in sys.argv:
             sys.stdout.write("AquaTerm framework copied to /Library/Frameworks/AquaTerm.framework\n")
 
 
-# Distutils setup information
-setup(
-    name='moog',
-    version=__version__,
-    author='Chris Sneden',
-    author_email='chris@verdi.as.utexas.edu',
-    maintainer='Andy Casey',
-    maintainer_email='andy@the.astrowizici.st',
-    url='http://www.as.utexas.edu/~chris/moog.html',
-    download_url='http://github.com/andycasey/moog',
-    description='Spectrum synthesis and LTE line analysis.',
-    long_description='MOOG is a code that performs a variety of LTE line '  \
-    +'analysis and spectrum synthesis tasks. The typical use of MOOG is to' \
-    +' assist in the determination of the chemical composition of a star.',
-    keywords='high-resolution, stellar, spectroscopy, astronomy, astrophysics',
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Environment :: MacOS X',
-        'Environment :: X11 Applications',
-        'Intended Audience :: Science/Research',
-        'Natural Language :: English',
-        'Operating System :: MacOS',
-        'Operating System :: POSIX',
-        'Operating System :: Unix',
-        'Programming Language :: Fortran',
-        'Programming Language :: Python :: 2.5',
-        'Topic :: Scientific/Engineering :: Astronomy',
-        'Topic :: Scientific/Engineering :: Physics',
-    ],
-    scripts=['moog/MOOG', 'moog/MOOGSILENT'],
-    )
+# If binaries are already built, we just need to install them to the right place
+elif 'install' in sys.argv:
+	# Define all the necessary paths
+	repository_dir = os.path.dirname(os.path.realpath(__file__))
+	data_dir = os.path.expanduser('/.moog')
+
+	# Make the data directory to hold data files
+    if not os.path.exists(data_dir):
+        system_call('mkdir %s' % data_dir)
+        
+    # Move the data files to the data directory
+    os.system('cp %s/src/Barklem* %s/' % (repository_dir, data_dir))
+    
+    # Move the pre-compiled binaries to the right location
+    os.system('cp %s/bin/* /usr/local/bin/' % repository_dir)
+    
+    # Move the necessary frameworks to the right location
+    if not os.path.exists('/usr/local/lib/libg2c.0.dylib'):
+    	os.system('cp %s/lib/libg2c.0.dylib /usr/local/lib/' % repository_dir)
+    
+    # Copy the AquaTerm framework
+    if not os.path.exists('/Library/Frameworks/AquaTerm.framework/'):
+        try: system_call('cp -R %s /Library/Frameworks/AquaTerm.framework/' % os.path.join(repository_dir, 'lib/AquaTerm.framework/'))
+        except: sys.stdout.write("AquaTerm framework could not be installed to /Library/Frameworks/AquaTerm.framework\n")
+        else: sys.stdout.write("AquaTerm framework copied to /Library/Frameworks/AquaTerm.framework\n")
