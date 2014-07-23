@@ -101,8 +101,8 @@ if 'install' in sys.argv:
     configuration = "\n".join([fortran_vars, aqlib, smlib])
 
     # Update the makefiles with the proper SMLIB and AQLIB
-    run_make_files = [os.path.join(repository_dir, 'moog', filename) for filename in run_make_files]
-    hardcoded_moog_files = [os.path.join(repository_dir, 'moog', filename) for filename in ('Begin.f', 'Moog.f', 'Moogsilent.f')]
+    run_make_files = [os.path.join(repository_dir, 'src', filename) for filename in run_make_files]
+    hardcoded_moog_files = [os.path.join(repository_dir, 'src', filename) for filename in ('Begin.f', 'Moog.f', 'Moogsilent.f')]
 
     # Setup: Move and create copies of the original
     for make_file in run_make_files:
@@ -129,7 +129,7 @@ if 'install' in sys.argv:
 
     # Run the appropriate make files
     for make_file in run_make_files:
-        os.system('cd moog;make -f %s' % make_file)
+        os.system('cd src;make -f %s' % make_file)
 
     # Cleanup files: Replace with original files
     [move(moog_file + '.original', moog_file) for moog_file in hardcoded_moog_files if os.path.exists(moog_file + '.original')]
