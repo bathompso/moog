@@ -91,7 +91,7 @@ if 'install' in sys.argv:
         system_call('mkdir %s' % data_dir)
 
     # Copy files to data directory
-    src_dir = os.path.join(repository_dir, 'moog')
+    src_dir = os.path.join(repository_dir, 'src')
     data_files = glob('%s/*.dat' % src_dir)
     [copy(data_file, '%s/%s' % (data_dir, os.path.basename(data_file), )) for data_file in data_files]
     
