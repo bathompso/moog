@@ -93,4 +93,16 @@ for m in sort_score[0:20]:
 	vmicro = float(modfiles[m][13:15])/10.0	
 	print("%4d %4.1f %4.2f %4.1f      %6.3f  %6.3f  %6.3f" % (teff, logg, modfeh, vmicro, Dfeh[m], avg_std[m], Db[m]))
 	
+# Print all results to file
+of = open("automoog.out", 'w')
+print("%4s %4s %4s %4s      %6s  %6s  %6s" % ('Teff', 'logg', 'feh', 'vmic', 'Fe/H', 'Sigma', 'Intcp'), file=of)
+for m in range(len(modfiles)):
+		# Determine model parameters
+	teff = float(modfiles[m][1:5])
+	logg = float(modfiles[m][6:8])/10.0
+	modfeh = float(modfiles[m][9:12])/100.0
+	vmicro = float(modfiles[m][13:15])/10.0	
+	print("%4d %4.1f %4.2f %4.1f      %6.3f  %6.3f  %6.3f" % (teff, logg, modfeh, vmicro, Dfeh[m], avg_std[m], Db[m]), file=of)
+of.close()
+	
 	
