@@ -97,7 +97,7 @@ for r in range(len(results)):
 	
 # Determine residual "score"
 good = [x for x in range(len(modfiles)) if avg_std[x] < 0.05 and Dfeh[x] < 0.15]
-print("%4s %4s %4s %4s      %6s  %6s  %6s" % ('Teff', 'logg', 'feh', 'vmic', 'Fe/H', 'std.', 'Corr.'))
+print("%4s %4s %4s %4s      %6s  %6s  %6s" % ('Teff', 'logg', 'feh', 'vmic', 'DFe/H', 'std.', 'Corr.'))
 for m in good:
 	# Determine model parameters
 	teff = float(modfiles[m][1:5])
@@ -107,7 +107,7 @@ for m in good:
 	print("%4d %4.1f %4.2f %4.1f      %6.3f  %6.3f  %6.3f" % (teff, logg, modfeh, vmicro, Dfeh[m], avg_std[m], corr_coeff[m]))
 	
 of = open("automoog.out", 'w')
-print("%4s %4s %4s %4s      %6s  %6s  %6s" % ('Teff', 'logg', 'feh', 'vmic', 'Fe/H', 'std.', 'Corr.'), file=of)
+print("%4s %4s %4s %4s      %6s  %6s  %6s" % ('Teff', 'logg', 'feh', 'vmic', 'DFe/H', 'std.', 'Corr.'), file=of)
 order = np.argsort(avg_std)
 for m in order:
 	# Determine model parameters
