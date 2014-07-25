@@ -17,7 +17,7 @@ if not os.path.exists(outdir):
 subprocess.check_output("cp automoog.scr %s/" % (outdir), shell=True)
 
 # Compile the makekurucz executable
-subprocess.check_output("gfortran src/makemurucz3.f src/phdlibsd.f -ffixed-line-length-132 -o makekurucz", shell=True)
+subprocess.check_output("gfortran src/makekurucz3.f src/phdlibsd.f -ffixed-line-length-132 -o makekurucz", shell=True)
 
 teffs = np.arange(5200, 6510, 10)
 loggs = np.arange(3.0, 5.6, 0.1)
@@ -35,7 +35,7 @@ for t in teffs:
 				of.close()
 				
 				try:
-					subprocess.check_output("./makekurucz3 < tmp.in", shell=True)
+					subprocess.check_output("./makekurucz < tmp.in", shell=True)
 					jnk = subprocess.check_output("mv FINALMODEL %s/t%4dg%02df%03dv%02d" % (outdir, t, g*10, f*100, v*10), shell=True)
 				except:
 					pass
